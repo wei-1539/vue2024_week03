@@ -92,33 +92,42 @@
                                 </div>
                                 <h5 class="mb-3">多圖新增</h5>
 
+                                <!-- 這裡判斷tempProduct.imagesUrl是否有微陣列 -->
+                                <!-- 若沒有的話只出現新增按鈕 【新增陣列】-->
                                 <div class="mb-3" v-if="Array.isArray(tempProduct.imagesUrl)">
                                     <div class="mb-1" v-for="(image,key) in tempProduct.imagesUrl" :key="key">
                                         <div class="mb-3">
                                             <label :for="`imagesUrl${key}`" class="form-label">圖片網址</label>
-                                            <input :id="`imagesUrl${key}`" type="text" class="form-control" placeholder="請輸入圖片連結"
-                                                v-model="tempProduct.imagesUrl[key]">
+                                            <input :id="`imagesUrl${key}`" type="text" class="form-control"
+                                                placeholder="請輸入圖片連結" v-model="tempProduct.imagesUrl[key]">
                                         </div>
                                         <img class="img-fluid" :src="image" alt="">
+                                    </div>
+                                    <!--
+                                        這裡判斷 tempProduct.imagesUrl 的陣列裡面 『沒有』東西時出現新增按鈕
+                                        當『輸入圖片連結』的input 的欄位是『空』的時候就會出現刪除圖片
+                                    -->
+                                    <div v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]">
+                                        <button class="btn btn-outline-primary btn-sm d-block w-100"
+                                            @click="tempProduct.imagesUrl.push('')">
+                                            新增圖片
+                                        </button>
+                                    </div>
+                                    <div v-else>
+                                        <button class="btn btn-outline-danger btn-sm d-block w-100"
+                                            @click="tempProduct.imagesUrl.pop()">
+                                            刪除圖片
+                                        </button>
                                     </div>
                                 </div>
 
 
 
 
-                                <div v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]">
-                                    <button class="btn btn-outline-primary btn-sm d-block w-100"
-                                        @click="tempProduct.imagesUrl.push('')">
-                                        新增圖片
-                                    </button>
-                                </div>
-                                <div v-else>
-                                    <button class="btn btn-outline-danger btn-sm d-block w-100"
-                                        @click="tempProduct.imagesUrl.pop()">
-                                        刪除圖片
-                                    </button>
-                                </div>
-
+                                <!-- 
+                                    若沒有任何多圖的話則出現的這個
+                                    執行createImages 創建空陣列並push到data上的tempProduct.imagesUrl內
+                                -->
                                 <div v-else>
                                     <button class="btn btn-outline-primary btn-sm d-block w-100" @click="createImages">
                                         新增圖片
